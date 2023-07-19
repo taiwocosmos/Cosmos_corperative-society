@@ -92,8 +92,7 @@ def operation():
     >> """)
     if user == '1':
         time.sleep(2)
-        from member_reg import contribute
-        contribute()
+        contributee()
     elif user == '2':
         time.sleep(2)
         borrow()
@@ -110,6 +109,62 @@ def operation():
         print('Invalid Input')
         time.sleep(1)
         operation()
+
+def contributee():
+    account = input('Account Number>> ')
+    while len(account) != 10:
+        print('Invalid Account number; Account number must be 10 digits')
+        account = input('Account Number>> ')
+    amount = int(input('Amount>> '))
+    vall = (account, )
+    querry2 = "SELECT * from treasure_account where account_number = %s"
+    cursor.execute(querry2, vall) 
+    result = cursor.fetchone()
+    if result:
+        time.sleep(2)
+        print(f'Confirm Amount N{amount}, Beneficiary {result[1]}')
+        time.sleep(2)
+        user = input('Enter User ID>> ')
+        val = (user, )
+        querry = 'select * from non_members where user_ID =%s'
+        cursor.execute(querry, val)
+        result2 = cursor.fetchone()
+        if result2:
+            time.sleep(2)
+            print('Processing')
+            time.sleep(2)
+            print('Transaction Successful')
+            newBalance = (result[3] + amount)
+            val = (newBalance, account)
+            querry = 'update treasure_account set money_IN =%s where account_number =%s'
+            cursor.execute(querry, val)
+            myconn.commit()
+            newestBalance = (result2[9] + amount)
+            val = (newestBalance, user)
+            querry = 'update non_members set amount_contributed =%s where user_ID =%s'
+            cursor.execute(querry, val)
+            myconn.commit()
+            yee = input("""
+            1. Perfrom another Operation
+            2. Logout""")
+            if yee == '1':
+                time.sleep(2)
+                operation()
+            elif yee == '2':
+                time.sleep(2)
+                print('Logout Successful')
+                from home import home
+                time.sleep(2)
+                home()
+            else:
+                print('Invalid Input')
+                time.sleep(1)
+                yee = input("""
+            1. Perfrom another Operation
+            2. Logout
+            >> """)
+        else:
+            print('Invalid member ID')
 
 def borrow():
     print("""
@@ -141,16 +196,16 @@ def borrow():
                         print('Processing >>>')
                         if result[9] != 0:
                             time.sleep(3)
-                            print(f'Dear {result[1]} {result[3]}, you are requesting for a loan of N{amount} with an interest of 2%')
-                            refund = int((amount*0.02) + (amount))
+                            print(f'Dear {result[1]} {result[3]}, you are requesting for a loan of N{amount} with an interest of 5%')
+                            refund = int((amount*0.05) + (amount))
                             time.sleep(2)
                             print('Processing >>>')
                             time.sleep(3)
-                            print(f"""Dear {result[1]} {result[3]}, you are Eligible for a loan of N{amount} with interest of 2%.
+                            print(f"""Dear {result[1]} {result[3]}, you are Eligible for a loan of N{amount} with interest of 5%.
                             Sum total of PayBack Loan is N{refund}""")
-                            society_B = result2[3] - result[4]
+                            society_B = result2[3] - amount
                             val2 = (society_B, 1)
-                            querry = 'update treasure_account set balance =%swhere ID =%s'
+                            querry = 'update treasure_account set balance =%s where ID =%s'
                             cursor.execute(querry, val2)
                             myconn.commit()
                             time.sleep(2)
@@ -202,16 +257,16 @@ def borrow():
                                 borrow()
                         elif result[9] == 0:
                             time.sleep(3)
-                            print(f'You have made no Contributions/Donation to the society, hence interest rate of 5% on Loaned amount')
+                            print(f'You have made no Contributions/Donation to the society, hence interest rate of 10% on Loaned amount')
                             time.sleep(2)
                             print('Redirecting >>>')
                             time.sleep(3)
-                            print(f'Dear {result[1]} {result[3]}, you are requesting for a loan of N{amount} with an interest of 5%')
-                            refund = int((amount*0.05) + (amount))
+                            print(f'Dear {result[1]} {result[3]}, you are requesting for a loan of N{amount} with an interest of 10%')
+                            refund = int((amount*0.1) + (amount))
                             time.sleep(2)
                             print('Processing >>>')
                             time.sleep(3)
-                            print(f"""Dear {result[1]} {result[3]}, you are Eligible for a loan of N{amount} with interest of 5%.
+                            print(f"""Dear {result[1]} {result[3]}, you are Eligible for a loan of N{amount} with interest of 10%.
                             Sum total of PayBack Loan is N{refund}""")
                             society_B = result2[3] - result2[4]
                             val2 = (society_B, 1)
@@ -319,15 +374,15 @@ def pay_loan():
         time.sleep(2)
         print('Processing >>>')
         if res[10] != 0:
-            refund = int((res[11]*0.02) + (res[11]))
+            refund = int((res[11]*0.05) + (res[11]))
             time.sleep(3)
-            print(f'Dear {res[1]} {res[3]} your outstanding loan is N{res[11]}, with an interest of 2% PayBack loan is N{refund}')
+            print(f'Dear {res[1]} {res[3]} your outstanding loan is N{res[11]}, with an interest of 5% PayBack loan is N{refund}')
             time.sleep(2)
             checkLoann2
         elif res[10] == 0:
-            refunds = int((res[11]*0.05) + (res[11]))
+            refunds = int((res[11]*0.1) + (res[11]))
             time.sleep(2)
-            print(f'Dear {res[1]} {res[3]} your outstanding loan is N{res[11]}, with an interest of 5% PayBack loan is N{refunds}')
+            print(f'Dear {res[1]} {res[3]} your outstanding loan is N{res[11]}, with an interest of 10% PayBack loan is N{refunds}')
             time.sleep(2)
             checkLoann5()
         else:
