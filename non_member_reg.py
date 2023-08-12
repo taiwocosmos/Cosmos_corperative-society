@@ -35,7 +35,7 @@ def non_member_create():
     querry = 'insert into non_members(first_name, middle_name, last_name, gender, age, phone_number, address, pin, amount_contributed, Refund, Loan, interest, email, passwd, user_ID) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
     for x in range(15):
         if info[x] == 'user_ID':
-            bInfo = random.randint(22213543, 22986432)
+            bInfo = (f'NON/{random.randint(22001, 22999)}')
         elif info[x] == 'phone_number':
             bInfo = input('Enter Phone Number: ')
             while len(bInfo) != 11:
@@ -134,6 +134,11 @@ def contributee():
             print('Processing')
             time.sleep(2)
             print('Transaction Successful')
+            treB = (result[5] + amount)
+            vallll = (treB, 1)
+            querry = 'update treasure_account set balance =%s where ID =%s'
+            cursor.execute(querry, vallll)
+            myconn.commit()
             newBalance = (result[3] + amount)
             val = (newBalance, account)
             querry = 'update treasure_account set money_IN =%s where account_number =%s'
@@ -146,7 +151,8 @@ def contributee():
             myconn.commit()
             yee = input("""
             1. Perfrom another Operation
-            2. Logout""")
+            2. Logout
+            >> """)
             if yee == '1':
                 time.sleep(2)
                 operation()
@@ -164,7 +170,7 @@ def contributee():
             2. Logout
             >> """)
         else:
-            print('Invalid member ID')
+            print('Invalid User ID')
 
 def borrow():
     print("""
@@ -179,6 +185,9 @@ def borrow():
     global result
     result = cursor.fetchone()
     if result:
+        time.sleep(1)
+        print('Processing >>>')
+        time.sleep(2)
         print(f'Dear {result[1]} {result[3]}, you are requesting a loan with Cosmos Corperative Society')
         if result[11] == 0:
             amount = int(input('Amount>> '))
@@ -203,11 +212,6 @@ def borrow():
                             time.sleep(3)
                             print(f"""Dear {result[1]} {result[3]}, you are Eligible for a loan of N{amount} with interest of 5%.
                             Sum total of PayBack Loan is N{refund}""")
-                            society_B = result2[3] - amount
-                            val2 = (society_B, 1)
-                            querry = 'update treasure_account set balance =%s where ID =%s'
-                            cursor.execute(querry, val2)
-                            myconn.commit()
                             time.sleep(2)
                             req = input('Enter 4 digits PIN>> ')
                             pin = result[8]
@@ -221,24 +225,21 @@ def borrow():
                                 print('Processing >>>')
                                 time.sleep(2)
                                 print('Loan Application Successful')
-                                querry = 'select sum(loan) from non_members'
-                                val = (4, )
-                                cursor.execute(querry)
-                                res = cursor.fetchone()
+                                treas = (result2[3] - result2[4])
+                                val5 = (treas, 1)
+                                querry2 ='update treasure_account set balance =%s where ID =%s'
+                                cursor.execute(querry2, val5)
+                                myconn.commit()
                                 out = result2[4] + amount
                                 val4 = (out, 1)
                                 querry1 = 'update treasure_account set money_OUT =%s where ID =%s'
                                 cursor.execute(querry1, val4)
                                 myconn.commit()
-                                treas = result2[3] - result2[4]
-                                val5 = (treas, 1)
-                                querry2 ='update treasure_account set balance =%s where ID =%s'
-                                cursor.execute(querry2, val5)
-                                myconn.commit()
                                 time.sleep(2)
                                 yee = input("""
                                 1. Perfrom another Operation
-                                2. Logout""")
+                                2. Logout
+                                >> """)
                                 if yee == '1':
                                     operation()
                                 elif yee == '2':
@@ -250,7 +251,8 @@ def borrow():
                                     time.sleep(1)
                                     yee = input("""
                                 1. Perfrom another Operation
-                                2. Logout""")
+                                2. Logout
+                                >> """)
                             else:
                                 print('Invalid PIN')
                                 time.sleep(2)
@@ -268,11 +270,6 @@ def borrow():
                             time.sleep(3)
                             print(f"""Dear {result[1]} {result[3]}, you are Eligible for a loan of N{amount} with interest of 10%.
                             Sum total of PayBack Loan is N{refund}""")
-                            society_B = result2[3] - result2[4]
-                            val2 = (society_B, 1)
-                            querry = 'update treasure_account set balance =%s where ID =%s'
-                            cursor.execute(querry, val2)
-                            myconn.commit()
                             time.sleep(2)
                             req = input('Enter 4 digits PIN>> ')
                             pin = result[8]
@@ -284,24 +281,21 @@ def borrow():
                                 myconn.commit()
                                 time.sleep(2)
                                 print('Loan Application Successful')
-                                querry = 'select sum(loan) from non_members'
-                                val = (4, )
-                                cursor.execute(querry)
-                                res = cursor.fetchone()
+                                treas = (result2[3] - result2[4])
+                                val5 = (treas, 1)
+                                querry2 ='update treasure_account set balance =%s where ID =%s'
+                                cursor.execute(querry2, val5)
+                                myconn.commit()
                                 out = result2[4] + amount
                                 val4 = (out, 1)
                                 querry1 = 'update treasure_account set money_OUT =%s where ID =%s'
                                 cursor.execute(querry1, val4)
                                 myconn.commit()
-                                treas = result2[3] - result2[4]
-                                val5 = (treas, 1)
-                                querry2 ='update treasure_account set balance =%s where ID =%s'
-                                cursor.execute(querry2, val5)
-                                myconn.commit()
                                 time.sleep(2)
                                 yee = input("""
                                 1. Perfrom another Operation
-                                2. Logout""")
+                                2. Logout
+                                >> """)
                                 if yee == '1':
                                     operation()
                                 elif yee == '2':
@@ -315,7 +309,8 @@ def borrow():
                                     time.sleep(1)
                                     yee = input("""
                                 1. Perfrom another Operation
-                                2. Logout""")
+                                2. Logout
+                                >> """)
                             else:
                                 print('Invalid PIN')
                                 time.sleep(2)
@@ -341,7 +336,8 @@ def borrow():
             time.sleep(2)
             lo = input("""
             1. Pay Loan
-            0. Back""")
+            0. Back
+            >> """)
             if lo == '1':
                 time.sleep(1)
                 pay_loan()
@@ -391,103 +387,181 @@ def pay_loan():
         print('Record not found')
 
 def checkLoann2():
-    back = int(input('Enter Amount>> '))
-    if back == refund:
-        time.sleep(2)
-        print(f'{res[1]} {res[3]} Confirm PayBack amount of N{back} to Cosmos Corperative Society')
-        time.sleep(2)
-        pn = input('Enter 4digits PIN>> ')
-        val = (pn, )
-        querry = 'select * from members where pin =%s'
+    req = input("""
+    0. Request Account Number
+    00. Exit
+    >> """)
+    if req == '0':
+        time.sleep(1)
+        print('Processing >>>')
+        val = (1, )
+        querry = 'select * from treasure_account where ID =%s'
         cursor.execute(querry, val)
-        lol = cursor.fetchone()
-        if lol:
-            time.sleep(2)
-            print('Processing >>>')
+        acc = cursor.fetchone()
+        if acc:
             time.sleep(3)
-            print('Transaction Successful')
-        else:
-            print('Invalid PIN')
-        val1 = (res[11], user)
-        querry = 'update members set Refund =%s where user_ID =%s'
-        cursor.execute(querry, val1)
-        myconn.commit()
-        interest = refund - res[11]
-        val2 = (interest, pn)
-        querry = 'update members set interest =%s where pin =%s'
-        cursor.execute(querry, val2)
-        myconn.commit()
+            print(f'ACCOUNT NUMBER: {acc[2]}')
+            time.sleep(2)
+            back = int(input('Enter Amount>> '))
+            if back == refund:
+                time.sleep(2)
+                print(f'{res[1]} {res[3]} Confirm PayBack amount of N{back} to {acc[1]}')
+                time.sleep(2)
+                pn = input('Enter 4digits PIN>> ')
+                val = (pn, )
+                querry = 'select * from non_members where pin =%s'
+                cursor.execute(querry, val)
+                lol = cursor.fetchone()
+                if lol:
+                    time.sleep(2)
+                    print('Processing >>>')
+                    time.sleep(3)
+                    print('Transaction Successful')
+                else:
+                    print('Invalid PIN')
+                ba = (acc[5] + back)
+                val10 = (ba, 1)
+                querry = 'update treasure_account set balance =%s where ID =%s'
+                cursor.execute(querry, val10)
+                myconn.commit()
+                aba = (acc[3] + back)
+                valla = (aba, 1)
+                querry = 'update treasure_account set money_IN =%s where ID =%s'
+                cursor.execute(querry, valla)
+                myconn.commit()
+                val1 = (res[11], user)
+                querry = 'update non_members set Refund =%s where user_ID =%s'
+                cursor.execute(querry, val1)
+                myconn.commit()
+                interest = refund - res[11]
+                val2 = (interest, pn)
+                querry = 'update non_members set interest =%s where pin =%s'
+                cursor.execute(querry, val2)
+                myconn.commit()
+                loan = (refund - back)
+                val (loan, user)
+                querry = 'update non_members set Loan =%s where user_ID =%s'
+                cursor.execute(querry, val)
+                myconn.commit()
+                time.sleep(2)
+                yee = input("""
+                1. Perfrom another Operation
+                2. Logout
+                >> """)
+                if yee == '1':
+                    time.sleep(2)
+                    operation()
+                elif yee == '2':
+                    time.sleep(2)
+                    print('Logout Successful')
+                    from home import home
+                    time.sleep(2)
+                    home()
+                else:
+                    print('Invalid Input')
+                    time.sleep(1)
+                    yee = input("""
+                1. Perfrom another Operation
+                2. Logout
+                >> """)
+            else:
+                print(f'You are to PayBack total of N{refund}')
+                time.sleep(1)
+                checkLoann2()
+    elif req == '00':
         time.sleep(2)
-        yee = input("""
-        1. Perfrom another Operation
-        2. Logout""")
-        if yee == '1':
-            time.sleep(2)
-            operation()
-        elif yee == '2':
-            time.sleep(2)
-            print('Logout Successful')
-            from home import home
-            time.sleep(2)
-            home()
-        else:
-            print('Invalid Input')
-            time.sleep(1)
-            yee = input("""
-        1. Perfrom another Operation
-        2. Logout""")
+        operation()
     else:
-        print(f'You are to PayBack total of N{refund}')
+        print('Invalid Input')
         time.sleep(1)
         checkLoann2()
 
 def checkLoann5():
-    backs = int(input('Enter Amount>> '))
-    if backs == refunds:
+    req = input("""
+    0. Request Account Number
+    00. Exit
+    >> """)
+    if req == '0':
+        time.sleep(1)
+        print('Processing >>>')
+        val = (1, )
+        querry = 'select * from treasure_account where ID =%s'
+        cursor.execute(querry, val)
+        acc = cursor.fetchone()
+        if acc:
+            time.sleep(3)
+            print(f'ACCOUNT NUMBER: {acc[2]}')
+            time.sleep(2)
+            backs = int(input('Enter Amount>> '))
+            if backs == refunds:
+                time.sleep(2)
+                print(f'{res[1]} {res[3]} Confirm PayBack amount of N{backs} to {acc[1]}')
+                time.sleep(2)
+                pnn = input('Enter 4digits PIN>> ')
+                val3 = (pnn, )
+                querry = 'select * from non_members where pin =%s'
+                cursor.execute(querry, val3)
+                loll = cursor.fetchone()
+                if loll:
+                    time.sleep(2)
+                    print('Processing >>>')
+                    time.sleep(3)
+                    print('Transaction Successful')
+                else:
+                    print('Invalid PIN')
+                ba = (acc[5] + backs)
+                val10 = (ba, 1)
+                querry = 'update treasure_account set balance =%s where ID =%s'
+                cursor.execute(querry, val10)
+                myconn.commit()
+                aba = (acc[3] + backs)
+                valla = (aba, 1)
+                querry = 'update treasure_account set money_IN =%s where ID =%s'
+                cursor.execute(querry, valla)
+                myconn.commit()
+                val0 = (res[11], user)
+                querry = 'update non_members set Refund =%s where user_ID =%s'
+                cursor.execute(querry, val0)
+                myconn.commit()
+                interests = refunds - res[11]
+                val4 = (interests, pnn)
+                querry = 'update non_members set interest =%s where pin =%s'
+                cursor.execute(querry, val4)
+                myconn.commit()
+                loan = (refunds - backs)
+                val = (loan, user)
+                querry = 'update non_members set Loan =%s where user_ID =%s'
+                cursor.execute(querry, val)
+                myconn.commit()
+                time.sleep(2)
+                yeee = input("""
+                1. Perfrom another Operation
+                2. Logout
+                >> """)
+                if yeee == '1':
+                    time.sleep(2)
+                    operation()
+                elif yeee == '2':
+                    time.sleep(2)
+                    print('Logout Successful')
+                    from home import home
+                    time.sleep(2)
+                    home()
+                else:
+                    print('Invalid Input')
+                    time.sleep(1)
+                    yeee = input("""
+                1. Perfrom another Operation
+                2. Logout
+                >> """)
+            else:
+                print(f'You are to PayBack total of N{refunds}')
+                time.sleep(1)
+                checkLoann5()
+    elif req == '00':
         time.sleep(2)
-        print(f'{res[1]} {res[3]} Confirm PayBack amount of N{backs} to Cosmos Corperative Society')
-        time.sleep(2)
-        pnn = input('Enter 4digits PIN>> ')
-        val3 = (pnn, )
-        querry = 'select * from members where pin =%s'
-        cursor.execute(querry, val3)
-        loll = cursor.fetchone()
-        if loll:
-            time.sleep(2)
-            print('Processing >>>')
-            time.sleep(2)
-            print('Transaction Successful')
-        else:
-            print('Invalid PIN')
-        val0 = (res[11], user)
-        querry = 'update non_members set Refund =%s where user_ID =%s'
-        cursor.execute(querry, val0)
-        myconn.commit()
-        interests = refunds - res[11]
-        val4 = (interests, pnn)
-        querry = 'update members set interest =%s where pin =%s'
-        cursor.execute(querry, val4)
-        myconn.commit()
-        time.sleep(2)
-        yeee = input("""
-        1. Perfrom another Operation
-        2. Logout""")
-        if yeee == '1':
-            time.sleep(2)
-            operation()
-        elif yeee == '2':
-            time.sleep(2)
-            print('Logout Successful')
-            from home import home
-            time.sleep(2)
-            home()
-        else:
-            print('Invalid Input')
-            time.sleep(1)
-            yeee = input("""
-        1. Perfrom another Operation
-        2. Logout""")
+        operation()
     else:
-        print(f'You are to PayBack total of N{refunds}')
+        print('Invalid Input')
         time.sleep(1)
         checkLoann5()
